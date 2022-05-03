@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
@@ -15,8 +15,9 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import * as api from "../api/index.js";
-
+import useSWR from "swr";
+import Pagination from "@mui/material/Pagination";
+import PaginationItem from "@mui/material/PaginationItem";
 function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
@@ -30,24 +31,23 @@ function Copyright() {
   );
 }
 
+const fetcher = (url) => fetch(url).then((res) => res.json());
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const theme = createTheme();
 
 const Games = () => {
-  const [games, setGames] = React.useState([]);
-  const [loading, setLoading] = React.useState(false);
+  const [page, setPage] = useState(0);
+  const [pageCount, setPageCount] = useState(0);
+  const [gameDetails, setGameDetails] = useState([]);
+  const { data, error } = useSWR(
+    `http://localhost:5000/recom?page=${page}`,
+    fetcher
+  );
 
-  React.useEffect(() => {
-    const fetchGames = async () => {
-      setLoading(true);
-      const res = await api.getAll();
-      setGames(res.data);
-      setLoading(false);
-    };
-    fetchGames();
-  }, []);
-  console.log(games);
+  if (error) return "An error has occurred.";
+  if (!data) return "Loading...";
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -55,7 +55,7 @@ const Games = () => {
         <Toolbar>
           <PhotoCameraIcon sx={{ mr: 2 }} />
           <Typography variant="h6" color="inherit" noWrap>
-            Album layout
+            Steam Game Recommendation
           </Typography>
         </Toolbar>
       </AppBar>
@@ -71,12 +71,12 @@ const Games = () => {
           <Container maxWidth="sm">
             <Typography
               component="h1"
-              variant="h2"
+              variant="h4"
               align="center"
               color="text.primary"
               gutterBottom
             >
-              Album layout
+              Steam Game Recommendation
             </Typography>
             <Typography
               variant="h5"
@@ -84,11 +84,9 @@ const Games = () => {
               color="text.secondary"
               paragraph
             >
-              Something short and leading about the collection below—its
-              contents, the creator, etc. Make it short and sweet, but not too
-              short so folks don&apos;t simply skip over it entirely.
+              Choose a game of your choice
             </Typography>
-            <Stack
+            {/* <Stack
               sx={{ pt: 4 }}
               direction="row"
               spacing={2}
@@ -96,46 +94,49 @@ const Games = () => {
             >
               <Button variant="contained">Main call to action</Button>
               <Button variant="outlined">Secondary action</Button>
-            </Stack>
+            </Stack> */}
           </Container>
         </Box>
         <Container sx={{ py: 8 }} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {cards.map((card) => (
-              <Grid item key={card} xs={12} sm={6} md={4}>
-                <Card
-                  sx={{
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  <CardMedia
-                    component="img"
+            {data.docs.map((card) => {
+              return (
+                <Grid item key={card.app_id} xs={12} sm={6} md={4}>
+                  <Card
                     sx={{
-                      // 16:9
-                      pt: "56.25%",
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
                     }}
-                    image="https://source.unsplash.com/random"
-                    alt="random"
-                  />
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      Heading
-                    </Typography>
-                    <Typography>
-                      This is a media card. You can use this section to describe
-                      the content.
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small">View</Button>
-                    <Button size="small">Edit</Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
+                  >
+                    <CardMedia
+                      component="img"
+                      // sx={{
+                      //   // 16:9
+                      //   pt: "56.25%",
+                      // }}
+                      image={`https://cdn.cloudflare.steamstatic.com/steam/apps/${card.app_id}/header.jpg`}
+                    />
+                    <CardContent sx={{ flexGrow: 1 }}>
+                      <Typography gutterBottom variant="h6" component="h2">
+                        {card.name}
+                      </Typography>
+                      <Typography></Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Link
+                        href={`http://localhost:3000/game/${card.app_id}`}
+                        className="btn btn-primary"
+                        underline="none"
+                      >
+                        Show details
+                      </Link>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              );
+            })}
           </Grid>
         </Container>
       </main>
@@ -154,7 +155,18 @@ const Games = () => {
         </Typography>
         <Copyright />
       </Box>
+
       {/* End footer */}
+      <Container maxWidth="sm">
+        <Pagination
+          page={page}
+          count={100}
+          size="large"
+          boundaryCount={2}
+          // to={`/inbox${item.page === 1 ? "" : `?page=${item.page}`}`}
+          onChange={(event, value) => setPage(value)}
+        />
+      </Container>
     </ThemeProvider>
   );
 };

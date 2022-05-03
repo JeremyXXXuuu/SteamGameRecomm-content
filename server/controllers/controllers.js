@@ -14,10 +14,28 @@ const router = express.Router();
 //     res.status(404).json({ message: error.message });
 //   }
 // };
-export const getRecoms = async (req, res) => {
-  try {
-    const recomMessage = await RecomMessage.find();
 
+// export const getRecoms = async (req, res) => {
+//   try {
+//     const recomMessage = await RecomMessage.find();
+
+//     res.status(200).json(recomMessage);
+//   } catch (error) {
+//     res.status(404).json({ message: error.message });
+//   }
+// };
+
+export const getRecoms = async (req, res) => {
+  const { page, size, title } = req.query;
+  var condition = title
+    ? { title: { $regex: new RegExp(title), $options: "i" } }
+    : {};
+  try {
+    const limit = 9;
+    const recomMessage = await RecomMessage.paginate(condition, {
+      limit,
+      page,
+    });
     res.status(200).json(recomMessage);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -48,8 +66,6 @@ export const getDetails = async (req, res) => {
     const { data } = await axios.get(
       `https://store.steampowered.com/api/appdetails?appids=${id}&cc=us`
     );
-
-    console.log(data);
     res.status(200).json(data);
   } catch (error) {
     console.log(error);

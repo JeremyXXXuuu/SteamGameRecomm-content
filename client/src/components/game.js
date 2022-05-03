@@ -23,7 +23,7 @@ const Game = () => {
         console.log(res.data);
         const data = res.data;
         setCurrentGame(...data);
-        // console.log(currentGame);
+        console.log(currentGame);
       })
       .catch((e) => {
         console.log(e);
@@ -35,8 +35,8 @@ const Game = () => {
     api
       .getGameDetails(gid)
       .then((res) => {
-        setGameDetails(res.data[gid].data.detailed_description);
-        console.log(res.data[gid].data.detailed_description);
+        setGameDetails(res.data[gid].data.short_description);
+        console.log(res.data[gid].data.short_description);
       })
       .catch((e) => {
         console.log(e);
@@ -49,9 +49,6 @@ const Game = () => {
     getDetails(id);
   }, [id]);
 
-  const baseSteamUrl = "https://store.steampowered.com/api/appdetails";
-  const testUrl = "https://store.steampowered.com/api/appdetails?appids=10";
-
   // const getGamedetails = api.getGamedetails(gameUrlApi);
 
   return (
@@ -61,8 +58,8 @@ const Game = () => {
       <h1>Game url: {currentGame.url}</h1>
       <h1>Game recomm: {currentGame.recomm_id}</h1>
       <h1>Game details: {gameDetails}</h1>
-      {/* <div>{getGameDetails(currentGame.app_id)}</div> */}
-      <div>{getDetails(currentGame.app_id)}</div>
+
+      {/* <div>{getDetails(currentGame.app_id)}</div> */}
     </div>
   );
 };

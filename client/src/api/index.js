@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const url = "http://localhost:5000/recom";
-export const getAll = () => axios.get(url);
+export const getAll = (page) => axios.get(`${url}?page=${page}`);
 
 export const get = (id) => axios.get(`${url}/${id}`);
 
