@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
-import Button from "@mui/material/Button";
-import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
+
+import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
-import Stack from "@mui/material/Stack";
+
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -17,7 +17,12 @@ import Link from "@mui/material/Link";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import useSWR from "swr";
 import Pagination from "@mui/material/Pagination";
-import PaginationItem from "@mui/material/PaginationItem";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import SearchIcon from "@mui/icons-material/Search";
+import Paper from "@mui/material/Paper";
+import InputBase from "@mui/material/InputBase";
+
 function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
@@ -32,19 +37,31 @@ function Copyright() {
 }
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const theme = createTheme();
 
 const Games = () => {
   const [page, setPage] = useState(0);
+  const [searchGame, setSearchGame] = useState("");
+  const [search, setSearch] = useState("");
   const [pageCount, setPageCount] = useState(0);
   const [gameDetails, setGameDetails] = useState([]);
-  const { data, error } = useSWR(
-    `http://localhost:5000/recom?page=${page}`,
-    fetcher
-  );
+  const [url, setUrl] = useState(`http://localhost:5000/recom?name=`);
+  const { data, error } = useSWR(url, fetcher);
 
+  const findByGame = () => {
+    setSearchGame(search);
+    setUrl(`http://localhost:5000/recom?name=${search}`);
+  };
+
+  const onChangeSearchGame = (e) => {
+    const searchtitle = e.target.value;
+    setSearch(searchtitle);
+  };
+
+  const pageChange = (value) => {
+    setUrl(`http://localhost:5000/recom?name=${search}&page=${value}`);
+  };
   if (error) return "An error has occurred.";
   if (!data) return "Loading...";
 
@@ -53,10 +70,40 @@ const Games = () => {
       <CssBaseline />
       <AppBar position="relative">
         <Toolbar>
-          <PhotoCameraIcon sx={{ mr: 2 }} />
+          <SportsEsportsIcon sx={{ mr: 2 }} />
           <Typography variant="h6" color="inherit" noWrap>
             Steam Game Recommendation
           </Typography>
+
+          <Paper
+            component="form"
+            sx={{
+              p: "2px 4px",
+              display: "flex",
+              alignItems: "center",
+              width: 400,
+              ml: "auto",
+            }}
+          >
+            <IconButton sx={{ mr: 2 }} aria-label="menu">
+              <MenuIcon />
+            </IconButton>
+            <InputBase
+              sx={{ ml: 1, flex: 1 }}
+              placeholder="Search Games"
+              inputProps={{ "aria-label": "search games" }}
+              value={search}
+              onChange={onChangeSearchGame}
+            />
+            <IconButton
+              type="submit"
+              sx={{ mr: 2 }}
+              aria-label="search"
+              onClick={findByGame}
+            >
+              <SearchIcon />
+            </IconButton>
+          </Paper>
         </Toolbar>
       </AppBar>
       <main>
@@ -97,7 +144,7 @@ const Games = () => {
             </Stack> */}
           </Container>
         </Box>
-        <Container sx={{ py: 8 }} maxWidth="md">
+        <Container sx={{ py: 5 }} maxWidth="lg">
           {/* End hero unit */}
           <Grid container spacing={4}>
             {data.docs.map((card) => {
@@ -141,8 +188,19 @@ const Games = () => {
         </Container>
       </main>
       {/* Footer */}
+      <Container maxWidth="sm">
+        <Pagination
+          page={data.page}
+          count={data.totalPages}
+          size="large"
+          boundaryCount={2}
+          // to={`/inbox${item.page === 1 ? "" : `?page=${item.page}`}`}
+          // onChange={(event, value) => setPage(value)}
+          onChange={(event, value) => pageChange(value)}
+        />
+      </Container>
       <Box sx={{ bgcolor: "background.paper", p: 6 }} component="footer">
-        <Typography variant="h6" align="center" gutterBottom>
+        <Typography variant="h6" align="center">
           Footer
         </Typography>
         <Typography
@@ -155,18 +213,6 @@ const Games = () => {
         </Typography>
         <Copyright />
       </Box>
-
-      {/* End footer */}
-      <Container maxWidth="sm">
-        <Pagination
-          page={page}
-          count={100}
-          size="large"
-          boundaryCount={2}
-          // to={`/inbox${item.page === 1 ? "" : `?page=${item.page}`}`}
-          onChange={(event, value) => setPage(value)}
-        />
-      </Container>
     </ThemeProvider>
   );
 };

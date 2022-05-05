@@ -15,7 +15,7 @@ const router = express.Router();
 //   }
 // };
 
-// export const getRecoms = async (req, res) => {
+// export const getGames = async (req, res) => {
 //   try {
 //     const recomMessage = await RecomMessage.find();
 
@@ -25,10 +25,10 @@ const router = express.Router();
 //   }
 // };
 
-export const getRecoms = async (req, res) => {
-  const { page, size, title } = req.query;
-  var condition = title
-    ? { title: { $regex: new RegExp(title), $options: "i" } }
+export const getGames = async (req, res) => {
+  const { page, name } = req.query;
+  var condition = name
+    ? { name: { $regex: new RegExp(name), $options: "i" } }
     : {};
   try {
     const limit = 9;
@@ -42,7 +42,7 @@ export const getRecoms = async (req, res) => {
   }
 };
 
-export const getRecom = async (req, res) => {
+export const getGame = async (req, res) => {
   const { id } = req.params;
   try {
     const recomMessage = await RecomMessage.find({ app_id: id });
@@ -58,6 +58,32 @@ export const getRecom = async (req, res) => {
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
+};
+
+export const getRecomm = async (req, res) => {
+  const { id } = req.params;
+  var recomGames = [];
+
+  try {
+    const recomMessage = await RecomMessage.find({ app_id: id });
+    let recom = recomMessage[0].recomm_id.split(",");
+    recom = recom.map((element) => {
+      return Number(element);
+    });
+    console.log(recom);
+
+    await Promise.all(
+      recom.map(async (r) => {
+        const recomGame = await RecomMessage.find({ app_id: r });
+        var a = recomGame[0];
+
+        recomGames.push(a);
+      })
+    );
+
+    console.log(recomGames);
+    res.status(200).json(recomGames);
+  } catch (error) {}
 };
 
 export const getDetails = async (req, res) => {

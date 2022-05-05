@@ -1,41 +1,79 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import * as api from "../api/index.js";
+import { useDispatch } from "react-redux";
+import { getGames, findGamesByName } from "../actions/games";
+import { compose } from "redux";
 import useSWR from "swr";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
-function Test() {
-  const [page, setPage] = useState(0);
-  const [pageCount, setPageCount] = useState(0);
-  const { data, error } = useSWR(
-    `http://localhost:5000/recom?page=${page}`,
-    fetcher
-  );
-  if (error) return "An error has occurred.";
-  if (!data) return "Loading...";
-  const getGame = () => {
+
+const Test = () => {
+  const { id } = useParams();
+  const url = `http://localhost:5000/recom/recomm/${id}`;
+  const { data, error } = useSWR(url, fetcher);
+  const initialGameState = {
+    id: null,
+    app_id: [],
+    url: "",
+    name: "",
+    recomm_id: "",
+  };
+
+  const [currentGame, setCurrentGame] = useState(initialGameState);
+
+  const [gameid, setGameId] = useState("");
+  const [gameDetails, setGameDetails] = useState("");
+
+  const getGame = (id) => {
     api
-      .getAll()
+      .get(id)
       .then((res) => {
         console.log(res.data);
+        const data = res.data;
+        setCurrentGame(...data);
+        console.log(currentGame);
       })
       .catch((e) => {
         console.log(e);
         console.log("can't get game");
       });
   };
-  console.log(data.docs[0]);
-  return (
-    // <div>
-    //   <h1>{data.docs[0].name}</h1>
-    //   <button onClick={getGame}>test</button>;)
-    // </div>
 
+  const getDetails = (gid) => {
+    api
+      .getGameDetails(gid)
+      .then((res) => {
+        setGameDetails(res.data[gid].data.short_description);
+        console.log(res.data[gid].data.short_description);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  useEffect(() => {
+    getGame(id);
+    getDetails(id);
+  }, [id]);
+  console.log(data);
+
+  if (error) return "An error has occurred.";
+  if (!data) return "Loading...";
+  return (
     <div>
-      {data.docs.map((game) => {
-        return <div className=""></div>;
-      })}
+      <h1>Game Name: {currentGame.name}</h1>
+      <h1>Game id: {currentGame.app_id}</h1>
+      <h1>Game url: {currentGame.url}</h1>
+      <h1>Game recomm: {currentGame.recomm_id}</h1>
+      <h1>Game details: {gameDetails}</h1>
+      <h1>
+        {data.map((game) => {
+          return game.name;
+        })}
+      </h1>
     </div>
   );
-}
+};
 
 export default Test;
