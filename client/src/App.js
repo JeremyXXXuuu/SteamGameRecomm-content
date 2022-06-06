@@ -1,25 +1,34 @@
-import React from "react";
-import { ReactDOM } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Games from "./components/games.js";
-import Game from "./components/game.js";
-import Test from "./components/test.js";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Games from "./pages/Games";
+import Game from "./pages/Game";
+import Test from "./pages/test.js";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Header from "./components/Header";
 function App() {
   return (
-    <Router>
-      {/* <nav>
+    <>
+      <Router>
+        {/* <nav>
         <h1>Steam Game Recom</h1>
       </nav> */}
 
-      <div>
-        <Routes>
-          <Route path="/" element={<Games />} />
-          {/* <Route path="/games/:id" element={<Game />} /> */}
-          <Route path="/game/:id" element={<Game />} />
-          <Route path="/games/:id" element={<Test />} />
-        </Routes>
-      </div>
-    </Router>
+        <div>
+          <Header />
+          <Routes>
+            <Route path="/" element={<Games />} />
+            {/* <Route path="/games/:id" element={<Game />} /> */}
+            <Route path="/game/:id" element={<Game />} />
+            <Route path="/games/:id" element={<Test />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        </div>
+      </Router>
+      <ToastContainer />
+    </>
   );
 }
 

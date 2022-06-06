@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import * as api from "../api/index.js";
-import { useDispatch } from "react-redux";
-import { getGames, findGamesByName } from "../actions/games";
-import { compose } from "redux";
+
 import useSWR from "swr";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const Test = () => {
   const { id } = useParams();
-  const url = `http://localhost:5000/recom/recomm/${id}`;
+  const url = `/recom/recomm/${id}`;
   const { data, error } = useSWR(url, fetcher);
   const initialGameState = {
     id: null,
@@ -22,7 +20,6 @@ const Test = () => {
 
   const [currentGame, setCurrentGame] = useState(initialGameState);
 
-  const [gameid, setGameId] = useState("");
   const [gameDetails, setGameDetails] = useState("");
 
   const getGame = (id) => {

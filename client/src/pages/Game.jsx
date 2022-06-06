@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Link as Linkin } from "react-router-dom";
+
 import { useParams } from "react-router-dom";
 import * as api from "../api/index.js";
-import { useDispatch } from "react-redux";
-import { getGames, findGamesByName } from "../actions/games";
-import { compose } from "redux";
+
 import useSWR from "swr";
 import AppBar from "@mui/material/AppBar";
 
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
-import Button from "@mui/material/Button";
+
 import IconButton from "@mui/material/IconButton";
 import HomeIcon from "@mui/icons-material/Home";
 import Card from "@mui/material/Card";
@@ -18,14 +16,13 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
-
+import Rating from "@mui/material/Rating";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import "boxicons";
 
 function Copyright() {
   return (
@@ -40,14 +37,12 @@ function Copyright() {
   );
 }
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
 const fetcher = (url) => fetch(url).then((res) => res.json());
 const theme = createTheme();
 
 export default function Game() {
   const { id } = useParams();
-  const url = `http://localhost:5000/recom/recomm/${id}`;
+  const url = `/recom/recomm/${id}`;
   const { data, error } = useSWR(url, fetcher);
   const initialGameState = {
     id: null,
@@ -58,8 +53,7 @@ export default function Game() {
   };
 
   const [currentGame, setCurrentGame] = useState(initialGameState);
-
-  const [gameid, setGameId] = useState("");
+  const [value, setValue] = useState(0);
   const [gameDetails, setGameDetails] = useState("");
 
   const getGame = (id) => {
@@ -151,6 +145,15 @@ export default function Game() {
             </Typography>
           </Container>
         </Box>
+
+        
+        <Rating
+        name="simple-controlled"
+        value={value}
+        onChange={(event, newValue) => {
+          setValue(newValue);
+        }}
+      />
         <Container sx={{ py: 0 }} maxWidth="lg">
           {/* End hero unit */}
           <Grid container spacing={4}>
@@ -180,7 +183,7 @@ export default function Game() {
                     </CardContent>
                     <CardActions>
                       <Link
-                        href={`http://localhost:3000/game/${card.app_id}`}
+                        href={`/game/${card.app_id}`}
                         className="btn btn-primary"
                         underline="none"
                       >

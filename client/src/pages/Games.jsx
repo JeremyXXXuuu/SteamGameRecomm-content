@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
@@ -41,17 +41,13 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 const theme = createTheme();
 
 const Games = () => {
-  const [page, setPage] = useState(0);
-  const [searchGame, setSearchGame] = useState("");
   const [search, setSearch] = useState("");
-  const [pageCount, setPageCount] = useState(0);
-  const [gameDetails, setGameDetails] = useState([]);
-  const [url, setUrl] = useState(`http://localhost:5000/recom?name=`);
+
+  const [url, setUrl] = useState(`/recom?name=`);
   const { data, error } = useSWR(url, fetcher);
 
   const findByGame = () => {
-    setSearchGame(search);
-    setUrl(`http://localhost:5000/recom?name=${search}`);
+    setUrl(`/recom?name=${search}`);
   };
 
   const onChangeSearchGame = (e) => {
@@ -60,7 +56,7 @@ const Games = () => {
   };
 
   const pageChange = (value) => {
-    setUrl(`http://localhost:5000/recom?name=${search}&page=${value}`);
+    setUrl(`/recom?name=${search}&page=${value}`);
   };
   if (error) return "An error has occurred.";
   if (!data) return "Loading...";
@@ -173,7 +169,7 @@ const Games = () => {
                     </CardContent>
                     <CardActions>
                       <Link
-                        href={`http://localhost:3000/game/${card.app_id}`}
+                        href={`/game/${card.app_id}`}
                         className="btn btn-primary"
                         underline="none"
                       >

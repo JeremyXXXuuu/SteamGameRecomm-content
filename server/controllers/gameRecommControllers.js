@@ -1,8 +1,8 @@
-import express from "express";
-import mongoose from "mongoose";
-import GameMessage from "../models/gameMessage.js";
-import RecomMessage from "../models/gameRecom.js";
-import axios from "axios";
+const express = require("express");
+const mongoose = require("mongoose");
+
+const RecomMessage = require("../models/gameRecom.js");
+const axios = require("axios");
 const router = express.Router();
 
 // export const getPosts = async (req, res) => {
@@ -25,7 +25,7 @@ const router = express.Router();
 //   }
 // };
 
-export const getGames = async (req, res) => {
+const getGames = async (req, res) => {
   const { page, name } = req.query;
   var condition = name
     ? { name: { $regex: new RegExp(name), $options: "i" } }
@@ -42,7 +42,7 @@ export const getGames = async (req, res) => {
   }
 };
 
-export const getGame = async (req, res) => {
+const getGame = async (req, res) => {
   const { id } = req.params;
   try {
     const recomMessage = await RecomMessage.find({ app_id: id });
@@ -60,7 +60,7 @@ export const getGame = async (req, res) => {
   }
 };
 
-export const getRecomm = async (req, res) => {
+const getRecomm = async (req, res) => {
   const { id } = req.params;
   var recomGames = [];
 
@@ -81,12 +81,12 @@ export const getRecomm = async (req, res) => {
       })
     );
 
-    console.log(recomGames);
+    //console.log(recomGames);
     res.status(200).json(recomGames);
   } catch (error) {}
 };
 
-export const getDetails = async (req, res) => {
+const getDetails = async (req, res) => {
   const { id } = req.params;
   try {
     const { data } = await axios.get(
@@ -98,7 +98,7 @@ export const getDetails = async (req, res) => {
   }
 };
 
-export const createRecom = async (req, res) => {
+const createRecom = async (req, res) => {
   const { app_id, url, name, recom } = req.body;
   const newRecomMessage = new RecomMessage({ app_id, url, name, recom });
   try {
@@ -107,4 +107,11 @@ export const createRecom = async (req, res) => {
   } catch (error) {
     res.status(409).json({ message: error.message });
   }
+};
+
+module.exports = {
+  getGames,
+  getGame,
+  getRecomm,
+  getDetails,
 };
