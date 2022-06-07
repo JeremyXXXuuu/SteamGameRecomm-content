@@ -92,6 +92,7 @@ const Games = () => {
               ml: "auto",
             }}
           >
+            
             <IconButton sx={{ mr: 2 }} aria-label="menu">
               <MenuIcon />
             </IconButton>
@@ -111,6 +112,8 @@ const Games = () => {
               <SearchIcon />
             </IconButton>
           </Paper>
+
+
         </Toolbar>
       </AppBar>
       <main>

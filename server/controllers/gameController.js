@@ -5,14 +5,28 @@ const User = require("../models/userModel");
 
 const getGame = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const game = await Game.find({
-    user: req.user.id,
-    game_id: id,
-  });
-  console.log(game[0].score);
-  console.log(req.user.id);
-  console.log(id);
-  res.status(200).json(game);
+  if (!id) {
+    res.status(400);
+    throw new Error("Please add a id field");
+  }
+  try {
+    const game = await Game.find({
+      user: req.user.id,
+      game_id: id,
+    });
+    if (game.length > 0) {
+      console.log(game);
+      res.status(200).json(game);
+    } else {
+      res.status(200).json([{ score: -1 }]);
+    }
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+
+  // console.log(game[0].score);
+  // console.log(req.user.id);
+  // console.log(id);
 });
 
 const setGame = asyncHandler(async (req, res) => {

@@ -23,7 +23,11 @@ const getGame = async (gameData, token) => {
     },
   };
   const response = await axios.get(`${API_URL}/${gameData}`, config);
-  return response.data;
+  if (response) {
+    return response.data;
+  } else {
+    return { store: -1 };
+  }
 };
 
 //update Game rating

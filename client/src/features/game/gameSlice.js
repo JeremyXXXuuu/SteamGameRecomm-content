@@ -97,6 +97,7 @@ export const gameSlice = createSlice({
       .addCase(getGame.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
+
         state.score = action.payload[0].score;
       })
       .addCase(getGame.rejected, (state, action) => {

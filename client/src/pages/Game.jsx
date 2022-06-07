@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector,useDispatch } from 'react-redux'
 import { useParams } from "react-router-dom";
 import { useNavigate } from 'react-router-dom'
+import Spinner from '../components/Spinner'
 import * as api from "../api/index.js";
 
 import useSWR from "swr";
@@ -66,22 +67,20 @@ export default function Game() {
   )
 
 
-
+//if there is no user login navigate to /login
+//get current game score
   useEffect(() => {
     if (isError) {
       console.log(message)
     }
-
     if (!user) {
       navigate('/login')
     }
-
     dispatch(getGame(id))
-
   }, [user, navigate, isError, message, dispatch])
 
 
-
+// Set game score
   const onSubmit = (e) => {
     e.preventDefault()
     if(score>0){
@@ -91,8 +90,7 @@ export default function Game() {
     }
  
   }
-
-
+//get current game info : name, url, recomm_id
   const getGames = (id) => {
     api
       .get(id)
@@ -108,6 +106,7 @@ export default function Game() {
       });
   };
 
+  //get current game details
   const getDetails = (gid) => {
     api
       .getGameDetails(gid)
@@ -120,11 +119,14 @@ export default function Game() {
       });
   };
 
+  //when page change id refresh current game 
   useEffect(() => {
     getGames(id);
     getDetails(id);
   }, [id]);
-
+  if (isLoading) {
+    return <Spinner />
+  }
 
   if (error) return "An error has occurred.";
   if (!data) return "Loading...";
