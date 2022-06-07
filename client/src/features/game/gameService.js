@@ -10,7 +10,6 @@ const createGame = async (gameData, token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-
   const response = await axios.post(API_URL, gameData, config);
 
   return response.data;
@@ -24,7 +23,7 @@ const getGame = async (gameData, token) => {
     },
   };
   const response = await axios.get(`${API_URL}/${gameData}`, config);
-  return response.data[0].score || 0;
+  return response.data;
 };
 
 //update Game rating

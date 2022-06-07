@@ -16,24 +16,33 @@ const getGame = asyncHandler(async (req, res) => {
 });
 
 const setGame = asyncHandler(async (req, res) => {
-  const { id, score } = req.body;
+  const { id, text } = req.body;
   if (!id) {
     res.status(400);
     throw new Error("Please add a id field");
   }
+  if (!text) {
+    res.status(400);
+    throw new Error("Please add a score field");
+  }
   const game = await Game.create({
     user: req.user.id,
     game_id: id,
-    score: score,
+    score: text,
   });
+  console.log(game.score);
   res.status(200).json(game);
 });
 
 const updateGame = asyncHandler(async (req, res) => {
-  const { score } = req.body;
-  if (!score) {
+  const { id, text } = req.body;
+  if (!id) {
     res.status(400);
-    throw new Error("Game not found");
+    throw new Error("Please add a id field");
+  }
+  if (!text) {
+    res.status(400);
+    throw new Error("Please add a score field");
   }
   // Check for user
   if (!req.user) {
@@ -45,9 +54,13 @@ const updateGame = asyncHandler(async (req, res) => {
     user: req.user.id,
     game_id: req.body.id,
   };
-  const updatedGame = await Game.findOneAndUpdate(query, {
-    $set: { score: score },
-  });
+  const updatedGame = await Game.findOneAndUpdate(
+    query,
+    {
+      $set: { score: text },
+    },
+    { new: true }
+  );
   res.status(200).json(updatedGame);
 });
 

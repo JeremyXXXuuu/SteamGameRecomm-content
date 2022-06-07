@@ -77,8 +77,6 @@ export default function Game() {
     }
 
     dispatch(getGame(id))
- 
-
 
   }, [user, navigate, isError, message, dispatch])
 
@@ -86,9 +84,12 @@ export default function Game() {
 
   const onSubmit = (e) => {
     e.preventDefault()
-
-    dispatch(createGame({ text }))
-    setText('')
+    if(score>0){
+      dispatch(updateGame({id,text}))
+    }else{
+      dispatch(createGame( {id,text} ))
+    }
+ 
   }
 
 
@@ -182,11 +183,16 @@ export default function Game() {
           </Container>
         </Box>
 
-        <p> {score}</p>
-        <section className='form'>
+
+            <p> {score}</p>
+
+
+ <section>
+  {score>0?(
+      <section className='form'>
       <form onSubmit={onSubmit}>
         <div className='form-group'>
-          <label htmlFor='text'>Goal</label>
+          <label htmlFor='text'>update rating</label>
           <input
             type='text'
             name='text'
@@ -197,11 +203,39 @@ export default function Game() {
         </div>
         <div className='form-group'>
           <button className='btn btn-block' type='submit'>
-            Add Goal
+            update
           </button>
         </div>
       </form>
     </section>
+  ):(
+    <section className='form'>
+    <form onSubmit={onSubmit}>
+      <div className='form-group'>
+        <label htmlFor='text'>set rating</label>
+        <input
+          type='text'
+          name='text'
+          id='text'
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
+      </div>
+      <div className='form-group'>
+        <button className='btn btn-block' type='submit'>
+          Add 
+        </button>
+      </div>
+    </form>
+  </section>
+  )
+
+  }
+</section>
+
+
+
+  
         
         <Rating
         name="simple-controlled"

@@ -28,7 +28,7 @@ function Copyright() {
     <Typography variant="body2" color="text.secondary" align="center">
       {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        DS50 Website
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -42,24 +42,35 @@ const theme = createTheme();
 
 const Games = () => {
   const [search, setSearch] = useState("");
-
   const [url, setUrl] = useState(`/recom?name=`);
   const { data, error } = useSWR(url, fetcher);
 
+
+
+ //Search games
   const findByGame = () => {
     setUrl(`/recom?name=${search}`);
   };
-
   const onChangeSearchGame = (e) => {
     const searchtitle = e.target.value;
     setSearch(searchtitle);
   };
 
+
+  //Change pages
   const pageChange = (value) => {
     setUrl(`/recom?name=${search}&page=${value}`);
   };
+
+
+
   if (error) return "An error has occurred.";
   if (!data) return "Loading...";
+
+
+
+
+
 
   return (
     <ThemeProvider theme={theme}>

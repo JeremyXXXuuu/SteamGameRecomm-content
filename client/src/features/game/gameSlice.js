@@ -2,7 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import gameService from "./gameService";
 
 const initialState = {
-  score: 0,
+  score: -1,
+  data: null,
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -82,7 +83,8 @@ export const gameSlice = createSlice({
       .addCase(createGame.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.score = action.payload;
+        state.data = action.payload;
+        state.score = action.payload.score;
       })
       .addCase(createGame.rejected, (state, action) => {
         state.isLoading = false;
@@ -95,7 +97,7 @@ export const gameSlice = createSlice({
       .addCase(getGame.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.score = action.payload;
+        state.score = action.payload[0].score;
       })
       .addCase(getGame.rejected, (state, action) => {
         state.isLoading = false;
@@ -108,7 +110,8 @@ export const gameSlice = createSlice({
       .addCase(updateGame.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.game = action.payload;
+        state.score = action.payload.score;
+        state.data = action.payload;
       })
       .addCase(updateGame.rejected, (state, action) => {
         state.isLoading = false;
