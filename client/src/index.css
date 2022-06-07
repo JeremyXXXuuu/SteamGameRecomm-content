@@ -94,7 +94,7 @@ section{
   color: #828282;
 }
 
-.goals {
+.game {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;

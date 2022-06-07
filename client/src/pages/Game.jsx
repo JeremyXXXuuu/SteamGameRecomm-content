@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-
+import { useSelector,useDispatch } from 'react-redux'
 import { useParams } from "react-router-dom";
+import { useNavigate } from 'react-router-dom'
 import * as api from "../api/index.js";
 
 import useSWR from "swr";
@@ -23,6 +24,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { createGame,getGame,updateGame,reset } from "../features/game/gameSlice.js";
 
 function Copyright() {
   return (
@@ -55,8 +57,42 @@ export default function Game() {
   const [currentGame, setCurrentGame] = useState(initialGameState);
   const [value, setValue] = useState(0);
   const [gameDetails, setGameDetails] = useState("");
+  const [text, setText] = useState(null)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { user } = useSelector((state) => state.auth)
+  const { score, isLoading, isError, message } = useSelector(
+    (state) => state.game
+  )
 
-  const getGame = (id) => {
+
+
+  useEffect(() => {
+    if (isError) {
+      console.log(message)
+    }
+
+    if (!user) {
+      navigate('/login')
+    }
+
+    dispatch(getGame(id))
+ 
+
+
+  }, [user, navigate, isError, message, dispatch])
+
+
+
+  const onSubmit = (e) => {
+    e.preventDefault()
+
+    dispatch(createGame({ text }))
+    setText('')
+  }
+
+
+  const getGames = (id) => {
     api
       .get(id)
       .then((res) => {
@@ -84,10 +120,10 @@ export default function Game() {
   };
 
   useEffect(() => {
-    getGame(id);
+    getGames(id);
     getDetails(id);
   }, [id]);
-  console.log(data);
+
 
   if (error) return "An error has occurred.";
   if (!data) return "Loading...";
@@ -146,6 +182,26 @@ export default function Game() {
           </Container>
         </Box>
 
+        <p> {score}</p>
+        <section className='form'>
+      <form onSubmit={onSubmit}>
+        <div className='form-group'>
+          <label htmlFor='text'>Goal</label>
+          <input
+            type='text'
+            name='text'
+            id='text'
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+          />
+        </div>
+        <div className='form-group'>
+          <button className='btn btn-block' type='submit'>
+            Add Goal
+          </button>
+        </div>
+      </form>
+    </section>
         
         <Rating
         name="simple-controlled"

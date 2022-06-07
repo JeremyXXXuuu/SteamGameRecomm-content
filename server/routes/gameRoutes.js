@@ -8,9 +8,7 @@ const {
 } = require("../controllers/gameController");
 
 const { protect } = require("../middleware/authMiddleware");
-router
-  .route("/")
-  .get(protect, getGame)
-  .post(protect, setGame)
-  .put(protect, updateGame);
+router.route("/:id").get(protect, getGame);
+
+router.route("/").post(protect, setGame).put(protect, updateGame);
 module.exports = router;

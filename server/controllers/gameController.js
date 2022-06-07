@@ -4,10 +4,14 @@ const Game = require("../models/gameModel");
 const User = require("../models/userModel");
 
 const getGame = asyncHandler(async (req, res) => {
+  const { id } = req.params;
   const game = await Game.find({
     user: req.user.id,
-    game_id: req.body.id,
+    game_id: id,
   });
+  console.log(game[0].score);
+  console.log(req.user.id);
+  console.log(id);
   res.status(200).json(game);
 });
 
