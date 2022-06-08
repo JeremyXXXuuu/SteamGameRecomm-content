@@ -10,12 +10,13 @@ const recomSchema = mongoose.Schema(
     name: String,
     recomm_id: String,
   },
-  { collection: "steam_games2_recommid" }
+  // { collection: "steam_games2_recommid" }
+  { collection: "tags3000" }
 );
 
 recomSchema.plugin(mongoosePaginate);
 
 // var RecomMessage = mongoose.model("Recom_tests", recomSchema);
-var RecomMessage = mongoose.model("steam_games2_recommid", recomSchema);
+var RecomMessage = mongoose.model("tags3000", recomSchema);
 
 module.exports = RecomMessage;

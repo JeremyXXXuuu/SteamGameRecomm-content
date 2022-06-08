@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FaBlackberry, FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa'
 import AppBar from "@mui/material/AppBar";
 
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
@@ -22,7 +23,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
-
+import Footer from "../components/Footer";
 function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
@@ -30,7 +31,7 @@ function Copyright() {
       <Link color="inherit" href="https://mui.com/">
         DS50 Website
       </Link>{" "}
-      {new Date().getFullYear()}
+      {new Date().getFullYear()}  
       {"."}
     </Typography>
   );
@@ -44,6 +45,9 @@ const Games = () => {
   const [search, setSearch] = useState("");
   const [url, setUrl] = useState(`/recom?name=`);
   const { data, error } = useSWR(url, fetcher);
+
+
+
 
 
 
@@ -75,47 +79,18 @@ const Games = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AppBar position="relative">
+      {/* <AppBar position="relative">
         <Toolbar>
           <SportsEsportsIcon sx={{ mr: 2 }} />
           <Typography variant="h6" color="inherit" noWrap>
-            Steam Game Recommendation
-          </Typography>
-
-          <Paper
-            component="form"
-            sx={{
-              p: "2px 4px",
-              display: "flex",
-              alignItems: "center",
-              width: 400,
-              ml: "auto",
-            }}
-          >
             
-            <IconButton sx={{ mr: 2 }} aria-label="menu">
-              <MenuIcon />
-            </IconButton>
-            <InputBase
-              sx={{ ml: 1, flex: 1 }}
-              placeholder="Search Games"
-              inputProps={{ "aria-label": "search games" }}
-              value={search}
-              onChange={onChangeSearchGame}
-            />
-            <IconButton
-              type="submit"
-              sx={{ mr: 2 }}
-              aria-label="search"
-              onClick={findByGame}
-            >
-              <SearchIcon />
-            </IconButton>
-          </Paper>
-
-
+          </Typography>
+          
+      
+ 
+        
         </Toolbar>
-      </AppBar>
+      </AppBar> */}
       <main>
         {/* Hero unit */}
         <Box
@@ -143,15 +118,37 @@ const Games = () => {
             >
               Choose a game of your choice
             </Typography>
-            {/* <Stack
-              sx={{ pt: 4 }}
-              direction="row"
-              spacing={2}
-              justifyContent="center"
+
+            <Paper
+            component="form"
+            sx={{
+              p: "2px 4px",
+              display: "flex",
+              alignItems: "center",
+              
+              ml: "auto",
+            }}
+          >
+            
+            <IconButton sx={{ mr: 2 }} aria-label="menu">
+              <MenuIcon />
+            </IconButton>
+            <InputBase
+              sx={{ ml: 1, flex: 1 }}
+              placeholder="Search Games"
+              inputProps={{ "aria-label": "search games" }}
+              value={search}
+              onChange={onChangeSearchGame}
+            />
+            <IconButton
+              type="submit"
+              sx={{ mr: 2 }}
+              aria-label="search"
+              onClick={findByGame}
             >
-              <Button variant="contained">Main call to action</Button>
-              <Button variant="outlined">Secondary action</Button>
-            </Stack> */}
+              <SearchIcon />
+            </IconButton>
+          </Paper>
           </Container>
         </Box>
         <Container sx={{ py: 5 }} maxWidth="lg">
@@ -184,11 +181,13 @@ const Games = () => {
                     <CardActions>
                       <Link
                         href={`/game/${card.app_id}`}
-                        className="btn btn-primary"
+                        color="white"
+                        className="btn"
                         underline="none"
                       >
                         Show details
                       </Link>
+
                     </CardActions>
                   </Card>
                 </Grid>
@@ -209,20 +208,7 @@ const Games = () => {
           onChange={(event, value) => pageChange(value)}
         />
       </Container>
-      <Box sx={{ bgcolor: "background.paper", p: 6 }} component="footer">
-        <Typography variant="h6" align="center">
-          Footer
-        </Typography>
-        <Typography
-          variant="subtitle1"
-          align="center"
-          color="text.secondary"
-          component="p"
-        >
-          Something here to give the footer a purpose!
-        </Typography>
-        <Copyright />
-      </Box>
+      <Footer />
     </ThemeProvider>
   );
 };

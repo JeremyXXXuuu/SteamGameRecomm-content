@@ -17,6 +17,7 @@ function App() {
 
         <div>
           <Header />
+
           <Routes>
             <Route path="/" element={<Games />} />
             {/* <Route path="/games/:id" element={<Game />} /> */}

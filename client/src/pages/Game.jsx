@@ -6,12 +6,8 @@ import Spinner from '../components/Spinner'
 import * as api from "../api/index.js";
 
 import useSWR from "swr";
-import AppBar from "@mui/material/AppBar";
 
-import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 
-import IconButton from "@mui/material/IconButton";
-import HomeIcon from "@mui/icons-material/Home";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -20,13 +16,12 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Rating from "@mui/material/Rating";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { createGame,getGame,updateGame,reset } from "../features/game/gameSlice.js";
-
+import Footer from "../components/Footer";
 function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
@@ -133,18 +128,7 @@ export default function Game() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AppBar position="relative">
-        <Toolbar>
-          <SportsEsportsIcon sx={{ mr: 2 }} />
-          {/* <box-icon type="logo" name="steam"></box-icon> */}
-          <Typography variant="h6" color="inherit" noWrap>
-            Steam Game Recommendation
-          </Typography>
-          <IconButton href="/" variant="contained">
-            <HomeIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
+      
       <main>
         {/* Hero unit */}
         <Box
@@ -182,11 +166,17 @@ export default function Game() {
             >
               {gameDetails}
             </Typography>
+        <Typography
+              variant="h6"
+              // align="center"
+              color="text.secondary"
+              paragraph
+            >
+              {score}
+            </Typography>
           </Container>
         </Box>
 
-
-            <p> {score}</p>
 
 
  <section>
@@ -274,9 +264,10 @@ export default function Game() {
                       <Typography></Typography>
                     </CardContent>
                     <CardActions>
-                      <Link
+                    <Link
                         href={`/game/${card.app_id}`}
-                        className="btn btn-primary"
+                        color="white"
+                        className="btn"
                         underline="none"
                       >
                         Show details
@@ -290,20 +281,7 @@ export default function Game() {
         </Container>
       </main>
       {/* Footer */}
-      <Box sx={{ bgcolor: "background.paper", p: 6 }} component="footer">
-        <Typography variant="h6" align="center" gutterBottom>
-          Footer
-        </Typography>
-        <Typography
-          variant="subtitle1"
-          align="center"
-          color="text.secondary"
-          component="p"
-        >
-          Something here to give the footer a purpose!
-        </Typography>
-        <Copyright />
-      </Box>
+          <Footer />
       {/* End footer */}
     </ThemeProvider>
   );
