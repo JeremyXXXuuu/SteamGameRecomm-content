@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { FaBlackberry, FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa'
+import {
+  FaBlackberry,
+  FaSignInAlt,
+  FaSignOutAlt,
+  FaUser,
+} from "react-icons/fa";
 import AppBar from "@mui/material/AppBar";
 
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
@@ -24,18 +29,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import Footer from "../components/Footer";
-function Copyright() {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        DS50 Website
-      </Link>{" "}
-      {new Date().getFullYear()}  
-      {"."}
-    </Typography>
-  );
-}
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
@@ -46,12 +39,7 @@ const Games = () => {
   const [url, setUrl] = useState(`/recom?name=`);
   const { data, error } = useSWR(url, fetcher);
 
-
-
-
-
-
- //Search games
+  //Search games
   const findByGame = () => {
     setUrl(`/recom?name=${search}`);
   };
@@ -60,21 +48,13 @@ const Games = () => {
     setSearch(searchtitle);
   };
 
-
   //Change pages
   const pageChange = (value) => {
     setUrl(`/recom?name=${search}&page=${value}`);
   };
 
-
-
   if (error) return "An error has occurred.";
   if (!data) return "Loading...";
-
-
-
-
-
 
   return (
     <ThemeProvider theme={theme}>
@@ -120,37 +100,34 @@ const Games = () => {
             </Typography>
 
             <Paper
-            component="form"
-            sx={{
-              p: "2px 4px",
-              display: "flex",
-              alignItems: "center",
-              
-              ml: "auto",
-            }}
-          >
-            
-            <IconButton sx={{ mr: 2 }} aria-label="menu">
-              <MenuIcon />
-            </IconButton>
-            <InputBase
-              sx={{ ml: 1, flex: 1 }}
-              placeholder="Search Games"
-              inputProps={{ "aria-label": "search games" }}
-              value={search}
-              onChange={onChangeSearchGame}
-            />
-            <IconButton
-              type="submit"
-              sx={{ mr: 2 }}
-              aria-label="search"
-              onClick={findByGame}
+              component="form"
+              sx={{
+                p: "2px 4px",
+                display: "flex",
+                alignItems: "center",
+
+                ml: "auto",
+              }}
             >
-              <SearchIcon />
-            </IconButton>
-          </Paper>
+              <InputBase
+                sx={{ ml: 1, flex: 1 }}
+                placeholder="Search Games"
+                inputProps={{ "aria-label": "search games" }}
+                value={search}
+                onChange={onChangeSearchGame}
+              />
+              <IconButton
+                type="submit"
+                sx={{ mr: 2 }}
+                aria-label="search"
+                onClick={findByGame}
+              >
+                <SearchIcon />
+              </IconButton>
+            </Paper>
           </Container>
         </Box>
+
         <Container sx={{ py: 5 }} maxWidth="lg">
           {/* End hero unit */}
           <Grid container spacing={4}>
@@ -187,7 +164,6 @@ const Games = () => {
                       >
                         Show details
                       </Link>
-
                     </CardActions>
                   </Card>
                 </Grid>

@@ -1,6 +1,6 @@
 import axios from "axios";
-
-const API_URL = "/api/game";
+// const API_URL = "/api/game/";
+const API_URL = "/api/game/test";
 
 //create a game rating
 

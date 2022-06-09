@@ -4,9 +4,11 @@ import "react-toastify/dist/ReactToastify.css";
 import Games from "./pages/Games";
 import Game from "./pages/Game";
 import Test from "./pages/test.js";
+import UserRecomm from "./pages/UserRecomm";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Header from "./components/Header";
+
 function App() {
   return (
     <>
@@ -25,6 +27,7 @@ function App() {
             <Route path="/games/:id" element={<Test />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/userrecomm" element={<UserRecomm />} />
           </Routes>
         </div>
       </Router>

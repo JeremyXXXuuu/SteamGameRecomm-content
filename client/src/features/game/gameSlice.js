@@ -84,7 +84,7 @@ export const gameSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.data = action.payload;
-        state.score = action.payload.score;
+        state.score = action.payload.rating;
       })
       .addCase(createGame.rejected, (state, action) => {
         state.isLoading = false;
@@ -98,7 +98,7 @@ export const gameSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
 
-        state.score = action.payload[0].score;
+        state.score = action.payload[0].rating;
       })
       .addCase(getGame.rejected, (state, action) => {
         state.isLoading = false;
@@ -111,7 +111,7 @@ export const gameSlice = createSlice({
       .addCase(updateGame.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.score = action.payload.score;
+        state.score = action.payload.rating;
         state.data = action.payload;
       })
       .addCase(updateGame.rejected, (state, action) => {
