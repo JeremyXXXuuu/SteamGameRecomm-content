@@ -85,6 +85,18 @@ export default function Game() {
     }
  
   }
+
+
+  const rate = (e)=>{
+    e.preventDefault()
+    let text = e.target.value
+    if(score>0){
+      dispatch(updateGame({id,text}))
+    }else{
+      dispatch(createGame( {id,text} ))
+    }
+ 
+  }
 //get current game info : name, url, recomm_id
   const getGames = (id) => {
     api
@@ -130,14 +142,16 @@ export default function Game() {
       <CssBaseline />
       
       <main>
+
+      
         {/* Hero unit */}
-        <Box
+        {/* <Box
           sx={{
             bgcolor: "background.paper",
             pt: 8,
             pb: 6,
           }}
-        >
+        > */}
           <Container maxWidth="sm">
             <Typography
               component="h1"
@@ -166,6 +180,12 @@ export default function Game() {
             >
               {gameDetails}
             </Typography>
+
+            
+        <Grid container spacing={0}
+          direction="column"
+          alignItems="center"
+          justifyContent="center">
         <Typography
               variant="h6"
               // align="center"
@@ -174,8 +194,19 @@ export default function Game() {
             >
               {score}
             </Typography>
+            <Rating
+              name="simple-controlled"
+              value={score}
+              size="large"
+              onChange={(event) => {
+              // setText(event.target.value)
+              rate(event);
+              }}
+            />
+      </Grid>
+            
           </Container>
-        </Box>
+        {/* </Box> */}
 
 
 
@@ -229,13 +260,7 @@ export default function Game() {
 
   
         
-        <Rating
-        name="simple-controlled"
-        value={value}
-        onChange={(event, newValue) => {
-          setValue(newValue);
-        }}
-      />
+
         <Container sx={{ py: 0 }} maxWidth="lg">
           {/* End hero unit */}
           <Grid container spacing={4}>

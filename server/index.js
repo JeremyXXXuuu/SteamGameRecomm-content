@@ -27,6 +27,7 @@ app.use(cors());
 app.use("/recom", routes);
 app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/game", require("./routes/gameRoutes"));
+// app.use("/api/game", require("./routes/userRecommRoutes"));
 const CONNECTION_URL =
   "mongodb+srv://jeremy:root@cluster0.5ei45.mongodb.net/database?retryWrites=true&w=majority";
 const PORT = process.env.PORT || 5000;
