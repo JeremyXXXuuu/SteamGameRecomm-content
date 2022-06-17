@@ -32,7 +32,7 @@ const theme = createTheme();
 
 export default function Game() {
   const { id } = useParams();
-  const url = `/recom/recomm/${id}`;
+  const url = `/api/recom/recomm/${id}`;
   const { data, error } = useSWR(url, fetcher);
   const initialGameState = {
     id: null,

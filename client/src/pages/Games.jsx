@@ -36,12 +36,12 @@ const theme = createTheme();
 
 const Games = () => {
   const [search, setSearch] = useState("");
-  const [url, setUrl] = useState(`/recom?name=`);
+  const [url, setUrl] = useState(`/api/recom?name=`);
   const { data, error } = useSWR(url, fetcher);
 
   //Search games
   const findByGame = () => {
-    setUrl(`/recom?name=${search}`);
+    setUrl(`/api/recom?name=${search}`);
   };
   const onChangeSearchGame = (e) => {
     const searchtitle = e.target.value;
@@ -50,7 +50,7 @@ const Games = () => {
 
   //Change pages
   const pageChange = (value) => {
-    setUrl(`/recom?name=${search}&page=${value}`);
+    setUrl(`/api/recom?name=${search}&page=${value}`);
   };
 
   if (error) return "An error has occurred.";

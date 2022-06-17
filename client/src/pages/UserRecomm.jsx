@@ -36,6 +36,15 @@ function UserRecomm() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <main>
+        <Typography
+          component="h1"
+          variant="h4"
+          align="center"
+          color="text.primary"
+          gutterBottom
+        >
+          User's personnal Recommendation
+        </Typography>
         <Container sx={{ py: 0 }} maxWidth="lg">
           {/* End hero unit */}
           <Grid container spacing={4}>

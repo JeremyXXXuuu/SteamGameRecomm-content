@@ -11,10 +11,11 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 const { protect } = require("./middleware/authMiddleware");
 const RecomMessage = require("./models/gameRecom.js");
+
 // app.use(
 //   "/api",
 //   createProxyMiddleware({
-//     target: "https://store.steampowered.com",
+//     target: "http://localhost:3000",
 //     changeOrigin: true,
 //   })
 // );
@@ -26,7 +27,7 @@ app.use(cors());
 // app.get("/", async function (req, res) {
 //   res.json({ msg: "This is CORS-enabled for all origins!" });
 // });
-app.use("/recom", routes);
+app.use("/api/recom", routes);
 app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/game", require("./routes/gameRoutes"));
 app.use("/api/game/test", require("./routes/userRecommRoutes"));

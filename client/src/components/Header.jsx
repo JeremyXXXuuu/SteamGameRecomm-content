@@ -38,10 +38,14 @@ function Header() {
         </ul>
 
       </div> */}
+      {/* {user ? <h3>{user.name}'s game recommendation</h3> : <></>} */}
 
       <ul>
         {user ? (
           <>
+            <li>
+              <h4>{user.name}</h4>
+            </li>
             <li>
               <Link to="/userrecomm">
                 <button className="btn">recommend</button>

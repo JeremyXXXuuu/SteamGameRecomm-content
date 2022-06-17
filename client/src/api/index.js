@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "/recom";
+const url = "/api/recom";
 export const getAll = (page) => axios.get(`${url}?page=${page}`);
 
 export const get = (id) => axios.get(`${url}/${id}`);
